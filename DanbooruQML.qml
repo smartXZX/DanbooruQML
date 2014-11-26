@@ -1,6 +1,7 @@
 import QtQuick 2.3
 import QtQuick.XmlListModel 2.0
 import QtQuick.Layouts 1.1
+import QtQuick.Controls 1.2
 
 Rectangle {
     id: main
@@ -89,6 +90,10 @@ Rectangle {
                     Layout.preferredWidth: parent.width
                     source: model.preview_url
                     fillMode: Image.PreserveAspectFit
+                    BusyIndicator {
+                        anchors.centerIn: parent
+                        running: parent.status === Image.Loading
+                    }
                 }
 
                 Text {
