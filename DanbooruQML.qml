@@ -10,7 +10,7 @@ Rectangle {
     XmlListModel {
         id: postsXmlList
 
-        source: "http://konachan.com/post.xml?tags=blood&limit=100"
+        source: "http://konachan.com/post.xml"
         query: "/posts/post"
 
         XmlRole {
@@ -19,41 +19,46 @@ Rectangle {
         }
     }
 
-    ListView {
-        id: view
+    GridView {
+
+        id: postsView
 
         anchors.margins: 10
         anchors.fill: parent
-        spacing: 10
+        cellHeight: 100
+        cellWidth: cellHeight
+
         model: postsXmlList
+        clip: true
 
-        delegate: Rectangle {
-            width: view.width
-            height: 40
-            radius: 10
+        highlight: Rectangle {
+            color: "black"
+        }
 
-            Text {
+        delegate: Item {
+
+            property var view: GridView.view
+            property var isCurrent: GridView.isCurrentItem
+
+            height: postsView.cellHeight -80
+            width: postsView.cellWidth
+
+            Rectangle {
+                anchors.margins: 5
                 anchors.fill: parent
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                elide: Text.ElideRight
-                wrapMode: Text.Wrap
-                renderType: Text.NativeRendering
-                text: model.tags
+                color: "lightgreen"
+
+                Text {
+                    anchors.fill: parent
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                    text: model.tags
+                    wrapMode: Text.WordWrap
+                    elide: Text.ElideRight
+                }
             }
         }
     }
-
-/*    MouseArea {
-        anchors.fill: parent
-        onClicked: {
-            Qt.quit();
-        }
-    }
-
-    Text {
-        anchors.centerIn: parent
-        text: "Hello World"
-    } */
 }
 
