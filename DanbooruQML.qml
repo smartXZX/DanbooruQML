@@ -1,11 +1,12 @@
 import QtQuick 2.3
 import QtQuick.XmlListModel 2.0
+import QtQuick.Layouts 1.1
 
 Rectangle {
     id: main
-    width: 360
-    height: 360
-    color: "lightsteelblue"
+    width: 600
+    height: 600
+    color: "black"
 
     XmlListModel {
         id: postsXmlList
@@ -17,6 +18,11 @@ Rectangle {
             name: "tags"
             query: "@tags/string()"
         }
+
+        XmlRole {
+            name: "preview_url"
+            query: "@preview_url/string()"
+        }
     }
 
     GridView {
@@ -25,14 +31,17 @@ Rectangle {
 
         anchors.margins: 10
         anchors.fill: parent
-        cellHeight: 100
+
+        cellHeight: 300
         cellWidth: cellHeight
 
         model: postsXmlList
         clip: true
 
         highlight: Rectangle {
-            color: "black"
+            color: "lightblue"
+            radius: 5
+            opacity: 0.2
         }
 
         delegate: Item {
@@ -40,22 +49,35 @@ Rectangle {
             property var view: GridView.view
             property var isCurrent: GridView.isCurrentItem
 
-            height: postsView.cellHeight -80
+            height: postsView.cellHeight
             width: postsView.cellWidth
 
-            Rectangle {
+            ColumnLayout {
                 anchors.margins: 5
                 anchors.fill: parent
-                color: "lightgreen"
+                //color: "lightgreen"
+                spacing: 5
+
+                Image {
+                    Layout.preferredWidth: parent.width
+                    source: model.preview_url
+                    fillMode: Image.PreserveAspectFit
+                }
 
                 Text {
-                    anchors.fill: parent
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
+                    anchors.margins: 5
+                    Layout.preferredHeight: 40
+                    Layout.preferredWidth: parent.width
+                    color: "white"
                     renderType: Text.NativeRendering
                     text: model.tags
                     wrapMode: Text.WordWrap
                     elide: Text.ElideRight
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: postsView.currentIndex = model.index
                 }
             }
         }
