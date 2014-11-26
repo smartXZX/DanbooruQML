@@ -4,9 +4,9 @@ import QtQuick.Layouts 1.1
 
 Rectangle {
     id: main
-    width: 600
+    width: 720
     height: 600
-    color: "black"
+    color: "darkgrey"
 
     XmlListModel {
         id: postsXmlList
@@ -23,6 +23,11 @@ Rectangle {
             name: "preview_url"
             query: "@preview_url/string()"
         }
+
+        XmlRole {
+            name: "file_url"
+            query: "@file_url/string()"
+        }
     }
 
     GridView {
@@ -38,10 +43,32 @@ Rectangle {
         model: postsXmlList
         clip: true
 
+        header: Rectangle {
+            width: parent.width
+            height: 20
+            color: "lightblue"
+            opacity: 0.8
+            Text {
+                anchors.centerIn: parent
+                text: "Page 1"
+            }
+        }
+
+        footer: Rectangle {
+            width: parent.width
+            height: 20
+            color: "lightblue"
+            opacity: 0.8
+            Text {
+                anchors.centerIn: parent
+                text: "Page 1"
+            }
+        }
+
         highlight: Rectangle {
             color: "lightblue"
             radius: 5
-            opacity: 0.2
+            opacity: 0.4
         }
 
         delegate: Item {
@@ -78,6 +105,7 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: postsView.currentIndex = model.index
+                    onDoubleClicked: Qt.openUrlExternally(model.file_url)
                 }
             }
         }
