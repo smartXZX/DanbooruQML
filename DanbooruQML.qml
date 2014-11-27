@@ -44,6 +44,14 @@ Rectangle {
            }
        }
 
+       Tab {
+           title: "Next Page"
+           MouseArea {
+               anchors.fill: parent
+               onClicked: console.log("test")
+           }
+       }
+
        style: TabViewStyle {
            frameOverlap: 1
            tab: Rectangle {
