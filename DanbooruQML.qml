@@ -38,33 +38,16 @@ Rectangle {
         anchors.margins: 10
         anchors.fill: parent
 
-        cellHeight: 300
+        cellHeight: 200
         cellWidth: cellHeight
 
         model: postsXmlList
         clip: true
+        focus: true
 
-        header: Rectangle {
-            width: parent.width
-            height: 20
-            color: "lightblue"
-            opacity: 0.8
-            Text {
-                anchors.centerIn: parent
-                text: "Page 1"
-            }
-        }
+        header: pageMenu
 
-        footer: Rectangle {
-            width: parent.width
-            height: 20
-            color: "lightblue"
-            opacity: 0.8
-            Text {
-                anchors.centerIn: parent
-                text: "Page 1"
-            }
-        }
+        footer: pageMenu
 
         highlight: Rectangle {
             color: "lightblue"
@@ -74,16 +57,12 @@ Rectangle {
 
         delegate: Item {
 
-            property var view: GridView.view
-            property var isCurrent: GridView.isCurrentItem
-
             height: postsView.cellHeight
             width: postsView.cellWidth
 
             ColumnLayout {
                 anchors.margins: 5
                 anchors.fill: parent
-                //color: "lightgreen"
                 spacing: 5
 
                 Image {
@@ -114,6 +93,21 @@ Rectangle {
                 }
             }
         }
+        Component {
+            id: pageMenu
+            Rectangle {
+                width: parent.width
+                height: 20
+                color: "lightblue"
+                opacity: 0.8
+                Text {
+                    anchors.centerIn: parent
+                    text: "Page 1"
+                }
+            }
+        }
+
+
     }
 }
 
