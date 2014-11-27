@@ -1,13 +1,12 @@
 import QtQuick 2.3
 import QtQuick.XmlListModel 2.0
-import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.2
+import QtQuick.Controls.Styles 1.2
 
 Rectangle {
     id: main
     width: 720
     height: 600
-    color: "darkgrey"
 
     XmlListModel {
         id: postsXmlList
@@ -31,9 +30,37 @@ Rectangle {
         }
     }
 
-    CurrentPage {
-        model: postsXmlList
-        anchors.fill: parent
-    }
+   TabView {
+       id: mainTab
+       anchors.fill: parent
+       frameVisible: false
+       anchors.margins: 4
+
+       Tab {
+           title: "Page 0"
+           CurrentPage {
+               model: postsXmlList
+               anchors.fill: parent
+           }
+       }
+
+       style: TabViewStyle {
+           frameOverlap: 1
+           tab: Rectangle {
+               color: styleData.selected ? "darkgrey" : "steelblue"
+               //border.color: "steelblue"
+               implicitWidth: Math.max(text.width + 4, 80)
+               implicitHeight: 20
+               radius: 3
+               Text {
+                   id: text
+                   anchors.centerIn: parent
+                   text: styleData.title
+                   color: styleData.selected ? "white" : "black"
+               }
+           }
+           frame: Rectangle { color: "steelblue" }
+       }
+   }
 }
 
