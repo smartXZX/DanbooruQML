@@ -30,57 +30,65 @@ Rectangle {
         }
     }
 
+    Loader {
+        id: testLoader
+        anchors.fill: parent
+        //sourceComponent: TestRectangle
+    }
 
+    TabView {
+        id: mainTab
+        anchors.fill: parent
+        frameVisible: false
+        anchors.margins: 4
 
-   TabView {
-       id: mainTab
-       anchors.fill: parent
-       frameVisible: false
-       anchors.margins: 4
+        Tab {
+            title: "Page 0"
+            CurrentPage {
+                model: postsXmlList
+                anchors.fill: parent
+            }
+        }
 
-       Tab {
-           title: "Page 0"
-           CurrentPage {
-               model: postsXmlList
-               anchors.fill: parent
-           }
-       }
+        Tab {
+            title: "Page 1"
+        }
 
-       Tab {
-           title: "Page 1"
-       }
+        Tab {
+            id: next
+            title: "Next Page"
+        }
 
-       Tab {
-           id: next
-           title: "Next Page"
-       }
-
-       style: TabViewStyle {
-           frameOverlap: 1
-           tab: Rectangle {
-               color: styleData.selected ? "darkgrey" : "steelblue"
-               //border.color: "steelblue"
-               implicitWidth: Math.max(text.width + 4, 80)
-               implicitHeight: 20
-               radius: 3
-               Text {
-                   id: text
-                   anchors.centerIn: parent
-                   text: styleData.title
-                   color: styleData.selected ? "white" : "black"
-               }
-               MouseArea {
-                   anchors.fill: parent
-                   onClicked: if (styleData.index === (mainTab.count - 1)) {
-                                  console.log("test")
-                                  mainTab.insertTab(mainTab.count - 1, "Page %1".arg(mainTab.count - 1))
-                              }
-                              else {mainTab.currentIndex = styleData.index}
-               }
-           }
-           frame: Rectangle { color: "steelblue" }
-           tabBar: Rectangle { color: "lightgrey" }
-       }
-   }
+        style: TabViewStyle {
+            frameOverlap: 1
+            tab: Rectangle {
+                color: styleData.selected ? "darkgrey" : "steelblue"
+                //border.color: "steelblue"
+                implicitWidth: Math.max(text.width + 4, 80)
+                implicitHeight: 20
+                radius: 3
+                Text {
+                    id: text
+                    anchors.centerIn: parent
+                    text: styleData.title
+                    color: styleData.selected ? "white" : "black"
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: if (styleData.index === (mainTab.count - 1)) {
+                                   console.log("test")
+                                   testLoader.setSource("TestRectangle.qml",{color: "red",
+                                                            opacity: 0.5,
+                                                            radius: 5})
+                                   mainTab.insertTab(mainTab.count - 1, "Page %1".arg(mainTab.count - 1))
+                                   mainTab.currentIndex = mainTab.count - 2
+                               }
+                               else {mainTab.currentIndex = styleData.index}
+                }
+            }
+            frame: Rectangle { color: "steelblue" }
+            tabBar: Rectangle { color: "lightgrey" }
+        }
+    }
 }
 
