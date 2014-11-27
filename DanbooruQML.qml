@@ -30,6 +30,8 @@ Rectangle {
         }
     }
 
+
+
    TabView {
        id: mainTab
        anchors.fill: parent
@@ -45,11 +47,12 @@ Rectangle {
        }
 
        Tab {
+           title: "Page 1"
+       }
+
+       Tab {
+           id: next
            title: "Next Page"
-           MouseArea {
-               anchors.fill: parent
-               onClicked: console.log("test")
-           }
        }
 
        style: TabViewStyle {
@@ -66,8 +69,17 @@ Rectangle {
                    text: styleData.title
                    color: styleData.selected ? "white" : "black"
                }
+               MouseArea {
+                   anchors.fill: parent
+                   onClicked: if (styleData.index === (mainTab.count - 1)) {
+                                  console.log("test")
+                                  mainTab.insertTab(mainTab.count - 1, "Page %1".arg(mainTab.count - 1))
+                              }
+                              else {mainTab.currentIndex = styleData.index}
+               }
            }
            frame: Rectangle { color: "steelblue" }
+           tabBar: Rectangle { color: "lightgrey" }
        }
    }
 }
