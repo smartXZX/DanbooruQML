@@ -30,10 +30,12 @@ Rectangle {
         }
     }
 
-    Loader {
-        id: testLoader
-        anchors.fill: parent
-        //sourceComponent: TestRectangle
+    function createPage(tab, x, y){
+        var component = Qt.createComponent("TestRectangle.qml")
+        var sprite = component.createObject(tab)
+        sprite.x = x
+        sprite.y = y
+        sprite.color = "red"
     }
 
     TabView {
@@ -42,17 +44,14 @@ Rectangle {
         frameVisible: false
         anchors.margins: 4
 
-        Tab {
+        /*Tab {
             title: "Page 0"
-            CurrentPage {
+            /*CurrentPage {
                 model: postsXmlList
                 anchors.fill: parent
-            }
-        }
-
-        Tab {
-            title: "Page 1"
-        }
+            }*/
+            //Component.onCompleted: createPage(parent);
+       /* }*/
 
         Tab {
             id: next
@@ -77,10 +76,8 @@ Rectangle {
                     anchors.fill: parent
                     onClicked: if (styleData.index === (mainTab.count - 1)) {
                                    console.log("test")
-                                   testLoader.setSource("TestRectangle.qml",{color: "red",
-                                                            opacity: 0.5,
-                                                            radius: 5})
-                                   mainTab.insertTab(mainTab.count - 1, "Page %1".arg(mainTab.count - 1))
+                                   //createPage(mainTab)
+                                   createPage(mainTab.insertTab(mainTab.count - 1, "Page %1".arg(mainTab.count - 1)), mainTab.count*10, mainTab.count*20 )
                                    mainTab.currentIndex = mainTab.count - 2
                                }
                                else {mainTab.currentIndex = styleData.index}
