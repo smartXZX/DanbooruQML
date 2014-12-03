@@ -8,34 +8,19 @@ Rectangle {
     width: 720
     height: 600
 
-    XmlListModel {
-        id: postsXmlList
-
-        source: "http://konachan.com/post.xml"
-        query: "/posts/post"
-
-        XmlRole {
-            name: "tags"
-            query: "@tags/string()"
-        }
-
-        XmlRole {
-            name: "preview_url"
-            query: "@preview_url/string()"
-        }
-
-        XmlRole {
-            name: "file_url"
-            query: "@file_url/string()"
-        }
+    function createXMLList(page) {
+        var component = Qt.createComponent("PostsXmlList.qml")
+        var sprite = component.createObject()
+        sprite.source = "http://konachan.com/post.xml?page=" + page
+        console.log("loaded")
+        return sprite
     }
 
-    function createPage(tab, x, y){
-        var component = Qt.createComponent("TestRectangle.qml")
+    function createPage(tab, page){
+        var component = Qt.createComponent("CurrentPage.qml")
         var sprite = component.createObject(tab)
-        sprite.x = x
-        sprite.y = y
-        sprite.color = "red"
+        sprite.model = createXMLList(page)
+        //sprite.anchors = {fill: parent}
     }
 
     TabView {
@@ -44,18 +29,14 @@ Rectangle {
         frameVisible: false
         anchors.margins: 4
 
-        /*Tab {
-            title: "Page 0"
-            /*CurrentPage {
-                model: postsXmlList
-                anchors.fill: parent
-            }*/
-            //Component.onCompleted: createPage(parent);
-       /* }*/
-
         Tab {
             id: next
             title: "Next Page"
+        }
+
+        Component.onCompleted: {
+            createPage(mainTab.insertTab(mainTab.count, "Page 0"), 0)
+            mainTab.currentIndex = 0
         }
 
         style: TabViewStyle {
@@ -77,7 +58,7 @@ Rectangle {
                     onClicked: if (styleData.index === (mainTab.count - 1)) {
                                    console.log("test")
                                    //createPage(mainTab)
-                                   createPage(mainTab.insertTab(mainTab.count - 1, "Page %1".arg(mainTab.count - 1)), mainTab.count*10, mainTab.count*20 )
+                                   createPage(mainTab.insertTab(mainTab.count - 1, "Page %1".arg(mainTab.count - 1)),mainTab.count - 1)
                                    mainTab.currentIndex = mainTab.count - 2
                                }
                                else {mainTab.currentIndex = styleData.index}

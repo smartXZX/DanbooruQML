@@ -4,8 +4,10 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.2
 
 Rectangle {
-    property var model: pageView.model
+    property alias model: pageView.model
     color: "darkgrey"
+    anchors.fill: parent
+
 
     GridView {
         id: pageView
