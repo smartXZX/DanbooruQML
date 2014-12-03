@@ -18,7 +18,7 @@ Rectangle {
         cellHeight: 200
         cellWidth: cellHeight
 
-        model: postsXmlList
+        //model: postsXmlList
         clip: true
         focus: true
 
